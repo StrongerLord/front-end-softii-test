@@ -1,3 +1,3 @@
 <template>
-  <p>Hola</p>
+  <p>Navbar</p>
 </template>
