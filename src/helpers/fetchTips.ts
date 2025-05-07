@@ -9,6 +9,7 @@ export const fetchNewTip = async (order: Order[]) => {
       headers: {
         'Content-Type': 'application/json',
       },
+      body: JSON.stringify(order),
     })
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`)
