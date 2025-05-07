@@ -1,18 +1,12 @@
 <script setup lang="ts">
+import { formatCurrency } from '@/utils/currency'
 import IconBackArrow from '../icons/IconBackArrow.vue'
 defineProps({
-  totalTips: {
+  totalCash: {
     type: Number,
     required: true,
   },
 })
-
-const formatCurrency = (value: number): string => {
-  return new Intl.NumberFormat('es-MX', {
-    style: 'currency',
-    currency: 'MXN',
-  }).format(value)
-}
 </script>
 
 <template>
@@ -30,7 +24,7 @@ const formatCurrency = (value: number): string => {
     </div>
     <div class="flex w-[22%] flex-col items-end">
       <p class="text-md -mt-2">Efectivo en Caja</p>
-      <p class="text-4xl">{{ formatCurrency(totalTips) }}</p>
+      <p class="text-4xl">{{ formatCurrency(totalCash) }}</p>
     </div>
   </header>
 </template>

@@ -3,7 +3,7 @@ import IconPencil from '@/components/icons/IconPencil.vue'
 import IconWallet from '@/components/icons/IconWallet.vue'
 import IconCash from '@/components/icons/IconCash.vue'
 import IconCard from '@/components/icons/IconCard.vue'
-import { formatCurrency } from '@/helpers/currency'
+import { formatCurrency } from '@/utils/currency'
 defineProps({
   totalTips: {
     type: Number,
