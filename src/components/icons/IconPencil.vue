@@ -1,5 +1,5 @@
 <template>
-  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="w-[50%] fill-black">
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="w-full fill-black">
     <g id="SVGRepo_bgCarrier"></g>
     <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
     <g id="SVGRepo_iconCarrier">

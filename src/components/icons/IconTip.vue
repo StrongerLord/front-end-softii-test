@@ -5,11 +5,11 @@ defineProps<{
 </script>
 <template>
   <div
-    class="ml-[10%] flex w-[80%] items-center justify-center rounded-2xl py-[20%] transition-colors xl:rounded-4xl"
+    class="flex w-full items-center justify-center rounded-2xl px-[32%] py-[24%] transition-colors xl:rounded-4xl"
     :class="{ 'bg-primary': $props.active }"
   >
     <svg
-      class="w-[35%] transition-colors"
+      class="w-full transition-colors"
       :class="{
         'fill-white': $props.active,
         'fill-background-secondary': !$props.active,

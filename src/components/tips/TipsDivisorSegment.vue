@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import IconPencil from '@/components/icons/IconPencil.vue'
 import IconWallet from '@/components/icons/IconWallet.vue'
+import IconCash from '@/components/icons/IconCash.vue'
+import IconCard from '@/components/icons/IconCard.vue'
 </script>
 
 <template class="flex-col justify-between">
@@ -13,7 +15,7 @@ import IconWallet from '@/components/icons/IconWallet.vue'
         >
           $1,500.00
         </p>
-        <button class="m-[1%] ml-[4%]">
+        <button class="w-[11%]">
           <IconPencil />
         </button>
       </div>
@@ -24,6 +26,7 @@ import IconWallet from '@/components/icons/IconWallet.vue'
         type="number"
         class="border-background-base w-[30%] rounded-2xl border-2 px-[10%] py-[2%] text-2xl text-black"
         placeholder="#"
+        disabled
       />
       <p class="text-primary mt-[2%] w-[70%] items-end px-[5%] text-right text-xl">
         $0.00 x Persona
@@ -31,30 +34,35 @@ import IconWallet from '@/components/icons/IconWallet.vue'
     </div>
     <div class="mt-[15%] space-y-[3%]">
       <div class="flex flex-row items-center justify-start">
-        <IconWallet />
+        <div class="w-[8%]">
+          <IconWallet />
+        </div>
         <p class="pl-[4%]">Elige el Método de Pago</p>
       </div>
       <div class="flex flex-wrap items-center p-[2%]">
         <button
-          class="border-background-base m-[1%] h-24 w-[48%] rounded-2xl border-1 shadow-lg shadow-black/20"
+          class="border-background-base m-[1%] flex h-24 w-[48%] flex-col items-center justify-center rounded-2xl border-1 shadow-lg shadow-black/20"
         >
-          <IconCash />
+          <div class="w-[20%]">
+            <IconCash />
+          </div>
           <p class="text-xs">Efectivo</p>
         </button>
         <button
-          class="border-background-base m-[1%] h-24 w-[48%] rounded-2xl border-1 shadow-lg shadow-black/20"
+          class="border-background-base m-[1%] flex h-24 w-[48%] flex-col items-center justify-center rounded-2xl border-1 shadow-lg shadow-black/20"
         >
-          a
+          <div class="w-[20%]">
+            <IconCard />
+          </div>
+          <p class="text-xs">BBVA 1234</p>
         </button>
         <button
-          class="border-background-base m-[1%] h-24 w-[48%] rounded-2xl border-1 shadow-lg shadow-black/20"
+          class="border-background-base m-[1%] flex h-24 w-[48%] flex-col items-center justify-center rounded-2xl border-1 shadow-lg shadow-black/20"
         >
-          a
-        </button>
-        <button
-          class="border-background-base m-[1%] h-24 w-[48%] rounded-2xl border-1 shadow-lg shadow-black/20"
-        >
-          a
+          <div class="w-[20%]">
+            <IconCard />
+          </div>
+          <p class="text-xs">Santander 1234</p>
         </button>
       </div>
     </div>
