@@ -6,9 +6,10 @@ import TipsFooter from '@/components/tips/TipsFooter.vue'
 import TipsHeader from '@/components/tips/TipsHeader.vue'
 import TipsPaysSegment from '@/components/tips/TipsPaysSegment.vue'
 
-const totalTips = ref(16)
-const numberOfEmployees = ref(4)
-const totalTipsPerEmployee = ref(4)
+const totalTips = ref(0)
+const numberOfEmployees = ref(0)
+const totalTipsPerEmployee = ref(0)
+const tipToggleActivate = ref(false)
 
 const calculateTips = (): void => {
   if (numberOfEmployees.value > 0) {
@@ -17,6 +18,7 @@ const calculateTips = (): void => {
     totalTipsPerEmployee.value = 0
   }
 }
+calculateTips()
 </script>
 
 <template>
@@ -24,11 +26,13 @@ const calculateTips = (): void => {
     <TipsHeader :total-tips="totalTips" />
     <div class="flex h-[70%] w-full flex-row space-x-[2%] py-[2%]">
       <TipsDivisorSegment
+        @start-tip-process="(newValue) => (tipToggleActivate = newValue)"
+        :tip-toggle-activate="tipToggleActivate"
         :total-tips="totalTips"
         :number-of-employees="numberOfEmployees"
         :total-tips-per-employee="totalTipsPerEmployee"
       />
-      <TipsCalculatorSegment />
+      <TipsCalculatorSegment :total-tips="totalTips" :tip-toggle-activate="tipToggleActivate" />
       <TipsPaysSegment />
     </div>
     <TipsFooter />

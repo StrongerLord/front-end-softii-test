@@ -17,7 +17,16 @@ defineProps({
     type: Number,
     required: true,
   },
+  tipToggleActivate: {
+    type: Boolean,
+    required: true,
+  },
 })
+
+const emit = defineEmits(['start-tip-process'])
+const handleStartTipProcess = (value: boolean) => {
+  emit('start-tip-process', Boolean(value))
+}
 </script>
 
 <template class="flex-col justify-between">
@@ -30,7 +39,7 @@ defineProps({
         >
           {{ formatCurrency(totalTips) }}
         </p>
-        <button class="w-[11%]">
+        <button class="w-[11%]" @click="handleStartTipProcess(!tipToggleActivate)">
           <IconPencil />
         </button>
       </div>
@@ -38,6 +47,7 @@ defineProps({
     <p>¿Entre cuántos quieres dividir las Propinas?</p>
     <div class="flex w-full flex-row items-center justify-between">
       <input
+        :value="numberOfEmployees"
         type="number"
         class="border-background-base w-[30%] rounded-2xl border-2 px-[10%] py-[2%] text-2xl text-black"
         placeholder="#"
