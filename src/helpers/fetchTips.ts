@@ -4,7 +4,7 @@ export const fetchNewTip = async (order: Order[]) => {
     throw new Error('No orders provided')
   }
   try {
-    const response = await fetch('https://api.softii-backend.memer.live/tips', {
+    const response = await fetch('https://api-softii-backend.memer.live/tips', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -24,7 +24,7 @@ export const fetchNewTip = async (order: Order[]) => {
 
 export const fetchAllTips = async () => {
   try {
-    const response = await fetch('https://api.softii-backend.memer.live/tips', {
+    const response = await fetch('https://api-softii-backend.memer.live/tips', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
