@@ -1,10 +1,6 @@
 <template>
   <main class="my-[2%] flex aspect-[1.35] h-[95%] flex-col pr-[2%] pl-[3%]">
-    <TipsHeader />
     <div class="flex h-[70%] w-full flex-row space-x-[2%] py-[2%]">
-      <TipsDivisorSegment />
-      <TipsCalculatorSegment />
-
       <!-- Segmento de Operaciones (Reemplaza TipsPaysSegment) -->
       <div class="flex h-full w-1/3 flex-col overflow-y-auto">
         <div class="flex flex-col space-y-4 p-[2%]">
@@ -45,7 +41,6 @@
         </div>
       </div>
     </div>
-    <TipsFooter />
   </main>
 </template>
 <script setup lang="ts">
