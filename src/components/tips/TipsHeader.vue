@@ -1,12 +1,8 @@
 <script setup lang="ts">
 import { formatCurrency } from '@/utils/currency'
-import IconBackArrow from '../icons/IconBackArrow.vue'
-defineProps({
-  totalCash: {
-    type: Number,
-    required: true,
-  },
-})
+import IconBackArrow from '@/components/icons/IconBackArrow.vue'
+import { useTipsCalculator } from '@/composables/useTipsCalculator'
+const { totalCash } = useTipsCalculator()
 </script>
 
 <template>

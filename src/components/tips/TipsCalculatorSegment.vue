@@ -2,8 +2,10 @@
   <div
     class="bg-background-primary flex h-fit w-1/3 flex-wrap rounded-3xl p-[2%] pb-[4%] transition-all"
     :class="{
-      'bg-background-primary': !tipToggleActivate,
-      'bg-tertiary border-primary border-2': tipToggleActivate,
+      'bg-background-primary':
+        (!isCalculatorActive && stage < 3) || (isCalculatorActive && stage === 3),
+      'bg-tertiary border-primary border-2':
+        (isCalculatorActive && stage < 3) || (!isCalculatorActive && stage === 3),
     }"
   >
     <div class="border-background-base mx-[8%] flex w-full flex-row border-b-2">
@@ -16,11 +18,13 @@
         disabled
         placeholder=""
         :value="
-          stage === 1 && tipToggleActivate
+          stage === 1 && isCalculatorActive
             ? formatCurrency(totalTips)
-            : stage === 2 && tipToggleActivate
+            : stage === 2 && isCalculatorActive
               ? numberOfEmployees
-              : ''
+              : stage === 3 && !isCalculatorActive
+                ? formatCurrency(totalTipsPerEmployee)
+                : ''
         "
       />
       <button
@@ -30,9 +34,11 @@
             ? handleInputTotalTips(totalTips, '-1')
             : stage === 2
               ? handleInputNumberOfEmployees(numberOfEmployees, '-1')
-              : ''
+              : stage === 3
+                ? handleIndividualTip(totalTipsPerEmployee, 0)
+                : ''
         "
-        :disabled="!tipToggleActivate"
+        :disabled="!isCalculatorActive"
       >
         <IconErase />
       </button>
@@ -45,9 +51,11 @@
             ? handleInputTotalTips(totalTips, 1)
             : stage === 2
               ? handleInputNumberOfEmployees(numberOfEmployees, 1)
-              : ''
+              : stage === 3
+                ? handleIndividualTip(totalTipsPerEmployee, 0)
+                : ''
         "
-        :disabled="!tipToggleActivate"
+        :disabled="!isCalculatorActive"
       >
         1
       </button>
@@ -58,9 +66,11 @@
             ? handleInputTotalTips(totalTips, 2)
             : stage === 2
               ? handleInputNumberOfEmployees(numberOfEmployees, 2)
-              : ''
+              : stage === 3
+                ? handleIndividualTip(totalTipsPerEmployee, 0)
+                : ''
         "
-        :disabled="!tipToggleActivate"
+        :disabled="!isCalculatorActive"
       >
         2
       </button>
@@ -71,9 +81,11 @@
             ? handleInputTotalTips(totalTips, 3)
             : stage === 2
               ? handleInputNumberOfEmployees(numberOfEmployees, 3)
-              : ''
+              : stage === 3
+                ? handleIndividualTip(totalTipsPerEmployee, 0)
+                : ''
         "
-        :disabled="!tipToggleActivate"
+        :disabled="!isCalculatorActive"
       >
         3
       </button>
@@ -84,9 +96,11 @@
             ? handleInputTotalTips(totalTips, 4)
             : stage === 2
               ? handleInputNumberOfEmployees(numberOfEmployees, 4)
-              : ''
+              : stage === 3
+                ? handleIndividualTip(totalTipsPerEmployee, 0)
+                : ''
         "
-        :disabled="!tipToggleActivate"
+        :disabled="!isCalculatorActive"
       >
         4
       </button>
@@ -97,9 +111,11 @@
             ? handleInputTotalTips(totalTips, 5)
             : stage === 2
               ? handleInputNumberOfEmployees(numberOfEmployees, 5)
-              : ''
+              : stage === 3
+                ? handleIndividualTip(totalTipsPerEmployee, 0)
+                : ''
         "
-        :disabled="!tipToggleActivate"
+        :disabled="!isCalculatorActive"
       >
         5
       </button>
@@ -110,9 +126,11 @@
             ? handleInputTotalTips(totalTips, 6)
             : stage === 2
               ? handleInputNumberOfEmployees(numberOfEmployees, 6)
-              : ''
+              : stage === 3
+                ? handleIndividualTip(totalTipsPerEmployee, 0)
+                : ''
         "
-        :disabled="!tipToggleActivate"
+        :disabled="!isCalculatorActive"
       >
         6
       </button>
@@ -123,9 +141,11 @@
             ? handleInputTotalTips(numberOfEmployees, 7)
             : stage === 2
               ? handleInputNumberOfEmployees(numberOfEmployees, 7)
-              : ''
+              : stage === 3
+                ? handleIndividualTip(totalTipsPerEmployee, 0)
+                : ''
         "
-        :disabled="!tipToggleActivate"
+        :disabled="!isCalculatorActive"
       >
         7
       </button>
@@ -136,9 +156,11 @@
             ? handleInputTotalTips(numberOfEmployees, 8)
             : stage === 2
               ? handleInputNumberOfEmployees(numberOfEmployees, 8)
-              : ''
+              : stage === 3
+                ? handleIndividualTip(totalTipsPerEmployee, 0)
+                : ''
         "
-        :disabled="!tipToggleActivate"
+        :disabled="!isCalculatorActive"
       >
         8
       </button>
@@ -149,9 +171,11 @@
             ? handleInputTotalTips(totalTips, 9)
             : stage === 2
               ? handleInputNumberOfEmployees(totalTips, 9)
-              : ''
+              : stage === 3
+                ? handleIndividualTip(totalTipsPerEmployee, 0)
+                : ''
         "
-        :disabled="!tipToggleActivate"
+        :disabled="!isCalculatorActive"
       >
         9
       </button>
@@ -162,9 +186,11 @@
             ? handleInputTotalTips(totalTips, '00')
             : stage === 2
               ? handleInputNumberOfEmployees(numberOfEmployees, '00')
-              : ''
+              : stage === 3
+                ? handleIndividualTip(totalTipsPerEmployee, 0)
+                : ''
         "
-        :disabled="!tipToggleActivate"
+        :disabled="!isCalculatorActive"
       >
         00
       </button>
@@ -172,18 +198,20 @@
         class="border-background-base aspect-square w-full rounded-xl border-1 bg-white text-4xl font-medium"
         @click="
           stage === 1
-            ? handleInputNumberOfEmployees(numberOfEmployees, 0)
+            ? handleInputTotalTips(totalTips, 0)
             : stage === 2
-              ? handleInputTotalTips(totalTips, 0)
-              : ''
+              ? handleInputNumberOfEmployees(numberOfEmployees, 0)
+              : stage === 3
+                ? handleIndividualTip(totalTipsPerEmployee, 0)
+                : ''
         "
-        :disabled="!tipToggleActivate"
+        :disabled="!isCalculatorActive"
       >
         0
       </button>
       <button
         class="border-background-base bg-background-base aspect-square w-[60%] items-center justify-center rounded-xl border-1 text-2xl font-medium"
-        @click="stage++"
+        @click="nextStage()"
       >
         ✔️
       </button>
@@ -191,43 +219,41 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { ref } from 'vue'
 import { formatCurrency } from '@/utils/currency'
 import IconErase from '@/components/icons/IconErase.vue'
-const stage = ref(1)
-defineProps({
-  totalTipsPerEmployee: {
-    type: Number,
-    required: true,
-  },
-  totalTips: {
-    type: Number,
-    required: true,
-  },
-  tipToggleActivate: {
-    type: Boolean,
-    required: true,
-  },
-  numberOfEmployees: {
-    type: Number,
-    required: true,
-  },
-})
-const emit = defineEmits(['update-total-tips', 'update-number-of-employees'])
+import { useTipsCalculator } from '@/composables/useTipsCalculator'
+const {
+  totalTipsPerEmployee,
+  totalTips,
+  isCalculatorActive,
+  numberOfEmployees,
+  stage,
+  nextStage,
+  updateTotalTips,
+  updateNumberOfEmployees,
+} = useTipsCalculator()
 
 const handleInputTotalTips = (oldValue: number, addValue: number | string) => {
   if (addValue === '-1') {
-    emit('update-total-tips', String(oldValue).slice(0, -1))
+    updateTotalTips(Number(String(oldValue).slice(0, -1)))
     return
   }
-  emit('update-total-tips', Number(String(oldValue) + String(addValue)))
+  updateTotalTips(Number(String(oldValue) + String(addValue)))
 }
 
 const handleInputNumberOfEmployees = (oldValue: number, addValue: number | string) => {
   if (addValue === '-1') {
-    emit('update-number-of-employees', String(oldValue).slice(0, -1))
+    updateNumberOfEmployees(Number(String(oldValue).slice(0, -1)))
     return
   }
-  emit('update-number-of-employees', Number(String(oldValue) + String(addValue)))
+  updateNumberOfEmployees(Number(String(oldValue) + String(addValue)))
+}
+
+const handleIndividualTip = (oldValue: number, addValue: number | string) => {
+  if (addValue === '-1') {
+    // emit('update-total-tips', String(oldValue).slice(0, -1))
+    return
+  }
+  // emit('update-total-tips', Number(String(oldValue) + String(addValue)))
 }
 </script>

@@ -1,4 +1,4 @@
-export interface TipsToPay {
+export interface Order {
   id: string
   quantity: number
   method: {
