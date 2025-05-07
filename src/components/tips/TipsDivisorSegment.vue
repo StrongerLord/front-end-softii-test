@@ -6,7 +6,7 @@ import IconWallet from '@/components/icons/IconWallet.vue'
 <template class="flex-col justify-between">
   <div class="flex h-full w-1/3 flex-col items-start justify-start space-y-[3%] text-xl">
     <div class="w-full flex-wrap px-[15%]">
-      <p class="text-md text-primary w-full text-sm">Total de Propinas</p>
+      <p class="text-md text-primary w-full text-sm font-medium">Total de Propinas</p>
       <div class="mt-[2%] flex flex-row items-center justify-between">
         <p
           class="text-primary bg-secondary w-fit rounded-md pt-[2%] pr-[4%] pb-[5%] pl-[6%] text-4xl"
@@ -29,16 +29,33 @@ import IconWallet from '@/components/icons/IconWallet.vue'
         $0.00 x Persona
       </p>
     </div>
-    <div class="space-y-[3%]">
+    <div class="mt-[15%] space-y-[3%]">
       <div class="flex flex-row items-center justify-start">
         <IconWallet />
-        <p class="pl-[4%]">Elige el método de pago</p>
+        <p class="pl-[4%]">Elige el Método de Pago</p>
       </div>
       <div class="flex flex-wrap items-center p-[2%]">
-        <button class="border-background-base m-[1%] h-24 w-[48%] rounded-2xl border-1">a</button>
-        <button class="border-background-base m-[1%] h-24 w-[48%] rounded-2xl border-1">a</button>
-        <button class="border-background-base m-[1%] h-24 w-[48%] rounded-2xl border-1">a</button>
-        <button class="border-background-base m-[1%] h-24 w-[48%] rounded-2xl border-1">a</button>
+        <button
+          class="border-background-base m-[1%] h-24 w-[48%] rounded-2xl border-1 shadow-lg shadow-black/20"
+        >
+          <IconCash />
+          <p class="text-xs">Efectivo</p>
+        </button>
+        <button
+          class="border-background-base m-[1%] h-24 w-[48%] rounded-2xl border-1 shadow-lg shadow-black/20"
+        >
+          a
+        </button>
+        <button
+          class="border-background-base m-[1%] h-24 w-[48%] rounded-2xl border-1 shadow-lg shadow-black/20"
+        >
+          a
+        </button>
+        <button
+          class="border-background-base m-[1%] h-24 w-[48%] rounded-2xl border-1 shadow-lg shadow-black/20"
+        >
+          a
+        </button>
       </div>
     </div>
   </div>
