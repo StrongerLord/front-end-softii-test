@@ -2,10 +2,8 @@
   <div
     class="bg-background-primary flex h-fit w-1/3 flex-wrap rounded-3xl p-[2%] pb-[4%] transition-all"
     :class="{
-      'bg-background-primary':
-        (!isCalculatorActive && stage < 3) || (isCalculatorActive && stage === 3),
-      'bg-tertiary border-primary border-2':
-        (isCalculatorActive && stage < 3) || (!isCalculatorActive && stage === 3),
+      'bg-background-primary': !isCalculatorActive,
+      'bg-tertiary border-primary border-2': isCalculatorActive,
     }"
   >
     <div class="border-background-base mx-[8%] flex w-full flex-row border-b-2">
@@ -22,8 +20,8 @@
             ? formatCurrency(totalTips)
             : stage === 2 && isCalculatorActive
               ? numberOfEmployees
-              : stage === 3 && !isCalculatorActive
-                ? formatCurrency(totalTipsPerEmployee)
+              : isCalculatorActive
+                ? formatCurrency(tempOrder.quantity)
                 : ''
         "
       />
@@ -34,9 +32,7 @@
             ? handleInputTotalTips(totalTips, '-1')
             : stage === 2
               ? handleInputNumberOfEmployees(numberOfEmployees, '-1')
-              : stage === 3
-                ? handleIndividualTip(totalTipsPerEmployee, 0)
-                : ''
+              : handleIndividualTip(tempOrder.quantity, '-1')
         "
         :disabled="!isCalculatorActive"
       >
@@ -51,9 +47,7 @@
             ? handleInputTotalTips(totalTips, 1)
             : stage === 2
               ? handleInputNumberOfEmployees(numberOfEmployees, 1)
-              : stage === 3
-                ? handleIndividualTip(totalTipsPerEmployee, 0)
-                : ''
+              : handleIndividualTip(tempOrder.quantity, 1)
         "
         :disabled="!isCalculatorActive"
       >
@@ -66,9 +60,7 @@
             ? handleInputTotalTips(totalTips, 2)
             : stage === 2
               ? handleInputNumberOfEmployees(numberOfEmployees, 2)
-              : stage === 3
-                ? handleIndividualTip(totalTipsPerEmployee, 0)
-                : ''
+              : handleIndividualTip(tempOrder.quantity, 2)
         "
         :disabled="!isCalculatorActive"
       >
@@ -81,9 +73,7 @@
             ? handleInputTotalTips(totalTips, 3)
             : stage === 2
               ? handleInputNumberOfEmployees(numberOfEmployees, 3)
-              : stage === 3
-                ? handleIndividualTip(totalTipsPerEmployee, 0)
-                : ''
+              : handleIndividualTip(tempOrder.quantity, 3)
         "
         :disabled="!isCalculatorActive"
       >
@@ -96,9 +86,7 @@
             ? handleInputTotalTips(totalTips, 4)
             : stage === 2
               ? handleInputNumberOfEmployees(numberOfEmployees, 4)
-              : stage === 3
-                ? handleIndividualTip(totalTipsPerEmployee, 0)
-                : ''
+              : handleIndividualTip(tempOrder.quantity, 4)
         "
         :disabled="!isCalculatorActive"
       >
@@ -111,9 +99,7 @@
             ? handleInputTotalTips(totalTips, 5)
             : stage === 2
               ? handleInputNumberOfEmployees(numberOfEmployees, 5)
-              : stage === 3
-                ? handleIndividualTip(totalTipsPerEmployee, 0)
-                : ''
+              : handleIndividualTip(tempOrder.quantity, 5)
         "
         :disabled="!isCalculatorActive"
       >
@@ -126,9 +112,7 @@
             ? handleInputTotalTips(totalTips, 6)
             : stage === 2
               ? handleInputNumberOfEmployees(numberOfEmployees, 6)
-              : stage === 3
-                ? handleIndividualTip(totalTipsPerEmployee, 0)
-                : ''
+              : handleIndividualTip(tempOrder.quantity, 6)
         "
         :disabled="!isCalculatorActive"
       >
@@ -141,9 +125,7 @@
             ? handleInputTotalTips(numberOfEmployees, 7)
             : stage === 2
               ? handleInputNumberOfEmployees(numberOfEmployees, 7)
-              : stage === 3
-                ? handleIndividualTip(totalTipsPerEmployee, 0)
-                : ''
+              : handleIndividualTip(tempOrder.quantity, 7)
         "
         :disabled="!isCalculatorActive"
       >
@@ -156,9 +138,7 @@
             ? handleInputTotalTips(numberOfEmployees, 8)
             : stage === 2
               ? handleInputNumberOfEmployees(numberOfEmployees, 8)
-              : stage === 3
-                ? handleIndividualTip(totalTipsPerEmployee, 0)
-                : ''
+              : handleIndividualTip(tempOrder.quantity, 8)
         "
         :disabled="!isCalculatorActive"
       >
@@ -171,9 +151,7 @@
             ? handleInputTotalTips(totalTips, 9)
             : stage === 2
               ? handleInputNumberOfEmployees(totalTips, 9)
-              : stage === 3
-                ? handleIndividualTip(totalTipsPerEmployee, 0)
-                : ''
+              : handleIndividualTip(tempOrder.quantity, 9)
         "
         :disabled="!isCalculatorActive"
       >
@@ -186,9 +164,7 @@
             ? handleInputTotalTips(totalTips, '00')
             : stage === 2
               ? handleInputNumberOfEmployees(numberOfEmployees, '00')
-              : stage === 3
-                ? handleIndividualTip(totalTipsPerEmployee, 0)
-                : ''
+              : handleIndividualTip(tempOrder.quantity, '00')
         "
         :disabled="!isCalculatorActive"
       >
@@ -201,9 +177,7 @@
             ? handleInputTotalTips(totalTips, 0)
             : stage === 2
               ? handleInputNumberOfEmployees(numberOfEmployees, 0)
-              : stage === 3
-                ? handleIndividualTip(totalTipsPerEmployee, 0)
-                : ''
+              : handleIndividualTip(tempOrder.quantity, 0)
         "
         :disabled="!isCalculatorActive"
       >
@@ -211,7 +185,7 @@
       </button>
       <button
         class="border-background-base bg-background-base aspect-square w-[60%] items-center justify-center rounded-xl border-1 text-2xl font-medium"
-        @click="nextStage()"
+        @click="handleConfirmStage"
       >
         ✔️
       </button>
@@ -223,7 +197,7 @@ import { formatCurrency } from '@/utils/currency'
 import IconErase from '@/components/icons/IconErase.vue'
 import { useTipsCalculator } from '@/composables/useTipsCalculator'
 const {
-  totalTipsPerEmployee,
+  remaining,
   totalTips,
   isCalculatorActive,
   numberOfEmployees,
@@ -231,6 +205,10 @@ const {
   nextStage,
   updateTotalTips,
   updateNumberOfEmployees,
+  addOrder,
+  tempOrder,
+  setTempOrder,
+  toggleCalculator,
 } = useTipsCalculator()
 
 const handleInputTotalTips = (oldValue: number, addValue: number | string) => {
@@ -250,10 +228,39 @@ const handleInputNumberOfEmployees = (oldValue: number, addValue: number | strin
 }
 
 const handleIndividualTip = (oldValue: number, addValue: number | string) => {
+  console.log(oldValue, addValue)
+  let newQuantity: number
+
   if (addValue === '-1') {
-    // emit('update-total-tips', String(oldValue).slice(0, -1))
-    return
+    newQuantity = Number(String(oldValue).slice(0, -1))
+  } else {
+    newQuantity = Number(String(oldValue) + String(addValue))
   }
-  // emit('update-total-tips', Number(String(oldValue) + String(addValue)))
+
+  setTempOrder({
+    ...tempOrder.value,
+    quantity: newQuantity,
+  })
+}
+
+const handleConfirmStage = () => {
+  if (stage.value === 1 && totalTips.value > 0) {
+    nextStage()
+  } else if (stage.value === 2 && numberOfEmployees.value > 0) {
+    toggleCalculator(!isCalculatorActive)
+    nextStage()
+  } else if (stage.value >= 3) {
+    if (tempOrder.value.quantity > remaining.value) {
+      alert('La cantidad de propina no puede ser mayor a la cantidad total de propinas')
+      return
+    }
+    if (tempOrder.value.quantity <= 0) {
+      alert('La cantidad de propina no puede ser menor o igual a 0')
+      return
+    }
+    toggleCalculator(!isCalculatorActive)
+    addOrder(tempOrder.value)
+    setTempOrder({ id: Date.now().toString(), method: { type: '', information: '' }, quantity: 0 })
+  }
 }
 </script>

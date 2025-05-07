@@ -19,8 +19,10 @@ const { totalCash } = useTipsCalculator()
       <p class="text-2xl text-black">Pago de Propinas</p>
     </div>
     <div class="flex w-[22%] flex-col items-end">
-      <p class="text-md -mt-2">Efectivo en Caja</p>
-      <p class="text-4xl">{{ formatCurrency(totalCash) }}</p>
+      <p class="text-md text-primary -mt-2">Efectivo en Caja</p>
+      <p class="text-primary bg-secondary rounded-md pt-[2%] pr-[4%] pb-[5%] pl-[6%] text-4xl">
+        {{ formatCurrency(totalCash) }}
+      </p>
     </div>
   </header>
 </template>

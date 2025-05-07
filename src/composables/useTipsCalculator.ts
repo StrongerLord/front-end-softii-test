@@ -9,6 +9,7 @@ const totalTipsPerEmployee = ref(0)
 const isCalculatorActive = ref(false)
 const orders = ref<Order[]>([])
 const stage = ref(1)
+const tempOrder = ref({} as Order)
 
 // 1.1 recálculo de la propina por persona
 watch([totalTips, numberOfEmployees], () => {
@@ -24,9 +25,7 @@ const totalPaid = computed(() => orders.value.reduce((sum, o) => sum + o.quantit
 const remaining = computed(() => totalTips.value - totalPaid.value)
 
 // 1.4 habilitar botón “Pagar” solo cuando no quede nada o stage sea 4
-const canPay = computed(
-  () => stage.value === 4 || (totalPaid.value >= totalTips.value && orders.value.length > 0),
-)
+const canPay = computed(() => totalPaid.value >= totalTips.value && orders.value.length > 0)
 
 function toggleCalculator(on: boolean) {
   isCalculatorActive.value = on
@@ -53,6 +52,10 @@ function nextStage() {
   stage.value++
 }
 
+function setTempOrder(order: Order) {
+  tempOrder.value = order
+}
+
 export function useTipsCalculator() {
   return {
     totalCash,
@@ -71,5 +74,7 @@ export function useTipsCalculator() {
     updateTotalTips,
     updateNumberOfEmployees,
     nextStage,
+    setTempOrder,
+    tempOrder,
   }
 }

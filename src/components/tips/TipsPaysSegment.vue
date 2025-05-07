@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import IconCash from '../icons/IconCash.vue'
+import { formatCurrency } from '@/utils/currency'
 
 import { useTipsCalculator } from '@/composables/useTipsCalculator'
 const { orders, removeOrder } = useTipsCalculator()
@@ -17,8 +18,10 @@ const { orders, removeOrder } = useTipsCalculator()
           <div class="ml-[5%] w-[8%] items-center justify-center">
             <IconCash />
           </div>
-          <p>{{ order.method }}</p>
-          <p>${{ order.quantity }}</p>
+          <p class="w-[50%]">
+            {{ order.method.type === 'cash' ? 'Efectivo' : order.method.information }}
+          </p>
+          <p>{{ formatCurrency(order.quantity) }}</p>
           <button
             class="flex h-10 w-10 items-center justify-center rounded-full text-red-500"
             @click="removeOrder(order.id)"

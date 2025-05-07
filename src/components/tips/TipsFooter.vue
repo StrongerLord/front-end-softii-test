@@ -8,16 +8,26 @@
     </div>
     <div class="flex h-full w-1/2 items-center justify-end text-2xl">
       <button
-        class="bg-primary h-full justify-center rounded-full px-[10%] text-white"
+        class="h-full justify-center rounded-full px-[10%]"
+        :class="{
+          'bg-primary text-white': canPay,
+          'text-background-secondary border-background-secondary border-1 bg-white': !canPay,
+        }"
         :disabled="!canPay"
+        @click="() => fetchNewTip(orders)"
       >
-        Pagar $1,500.00 en Propinas
+        {{
+          canPay
+            ? 'Pagar ' + formatCurrency(totalTips) + ' en Propinas'
+            : 'No hay Propinas por Pagar'
+        }}
       </button>
     </div>
   </div>
 </template>
 <script setup lang="ts">
+import { fetchNewTip } from '@/helpers/fetchTips'
 import { formatCurrency } from '@/utils/currency'
 import { useTipsCalculator } from '@/composables/useTipsCalculator'
-const { totalPaid, remaining, canPay } = useTipsCalculator()
+const { totalPaid, remaining, canPay, totalTips, orders } = useTipsCalculator()
 </script>
