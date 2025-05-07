@@ -1,5 +1,5 @@
 <template>
-  <main class="my-[2%] flex h-auto w-[95%] flex-col pr-[2%] pl-[3%]">
+  <main class="my-[2%] flex aspect-[1.35] h-[95%] flex-col pr-[2%] pl-[3%]">
     <TipsHeader />
     <div class="flex h-[70%] w-full flex-row space-x-[2%] py-[2%]">
       <TipsDivisorSegment />
