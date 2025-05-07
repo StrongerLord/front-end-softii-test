@@ -1,22 +1,17 @@
 <template>
   <main class="my-[2%] flex aspect-[1.35] h-[95%] flex-col pr-[2%] pl-[3%]">
     <div class="flex h-[70%] w-full flex-row space-x-[2%] py-[2%]">
-      <!-- Segmento de Operaciones (Reemplaza TipsPaysSegment) -->
       <div class="flex h-full w-1/3 flex-col overflow-y-auto">
         <div class="flex flex-col space-y-4 p-[2%]">
-          <!-- Grupo por hora -->
           <div
             v-for="(group, index) in groupedOperations"
             :key="index"
             class="rounded-xl bg-white p-4 shadow-md"
           >
-            <!-- Header del grupo -->
             <div class="flex items-center justify-between border-b border-gray-200 pb-2">
-              <h3 class="text-lg font-semibold text-gray-700">{{ formatHour(group.hour) }}</h3>
+              <h3 class="text-lg font-semibold text-gray-700">{{ group.timeRange }}</h3>
               <span class="text-primary text-lg font-bold">{{ formatCurrency(group.total) }}</span>
             </div>
-
-            <!-- Métodos de pago -->
             <div class="mt-3 grid grid-cols-2 gap-2">
               <div
                 v-for="(payment, pIndex) in group.payments"
@@ -43,16 +38,13 @@
     </div>
   </main>
 </template>
+
 <script setup lang="ts">
 import { fetchAllTips } from '@/helpers/fetchTips'
 import { ref, onMounted } from 'vue'
 import { formatCurrency } from '@/utils/currency'
 import IconCash from '@/components/icons/IconCash.vue'
 import IconCard from '@/components/icons/IconCard.vue'
-import TipsCalculatorSegment from '@/components/tips/TipsCalculatorSegment.vue'
-import TipsDivisorSegment from '@/components/tips/TipsDivisorSegment.vue'
-import TipsFooter from '@/components/tips/TipsFooter.vue'
-import TipsHeader from '@/components/tips/TipsHeader.vue'
 
 interface Payment {
   method: {
@@ -65,50 +57,76 @@ interface Payment {
 }
 
 interface OperationGroup {
-  hour: string
+  timeRange: string
   payments: Payment[]
   total: number
 }
 
 const groupedOperations = ref<OperationGroup[]>([])
 
-// Función para agrupar por hora
-const groupByHour = (payments: Payment[]) => {
-  const groupsMap = new Map<string, OperationGroup>()
+const groupByTimeWindow = (payments: Payment[]) => {
+  if (payments.length === 0) return []
 
-  payments.forEach((payment) => {
-    const date = new Date(payment.createdAt)
-    const hour = `${date.getHours()}:00`
+  const sortedPayments = [...payments].sort(
+    (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
+  )
 
-    if (!groupsMap.has(hour)) {
-      groupsMap.set(hour, {
-        hour,
-        payments: [],
-        total: 0,
-      })
+  const groups: OperationGroup[] = []
+  let currentGroup: Payment[] = []
+  let groupStartTime: Date | null = null
+
+  sortedPayments.forEach((payment, index) => {
+    const paymentTime = new Date(payment.createdAt)
+
+    if (!groupStartTime) {
+      groupStartTime = paymentTime
+      currentGroup.push(payment)
+    } else {
+      const timeDiff = paymentTime.getTime() - groupStartTime.getTime()
+
+      if (timeDiff <= 120000) {
+        currentGroup.push(payment)
+      } else {
+        groups.push(createGroup(currentGroup, groupStartTime))
+        currentGroup = [payment]
+        groupStartTime = paymentTime
+      }
     }
-
-    const group = groupsMap.get(hour)!
-    group.payments.push(payment)
-    group.total += payment.quantity
+    if (index === sortedPayments.length - 1) {
+      groups.push(createGroup(currentGroup, groupStartTime!))
+    }
   })
 
-  // Ordenar de más reciente a más antiguo
-  groupedOperations.value = Array.from(groupsMap.values()).sort((a, b) => {
-    return b.hour.localeCompare(a.hour)
-  })
+  return groups.sort(
+    (a, b) =>
+      new Date(b.payments[0].createdAt).getTime() - new Date(a.payments[0].createdAt).getTime(),
+  )
 }
 
-const formatHour = (hour: string) => {
-  const [h] = hour.split(':')
-  return `${h}:00 - ${parseInt(h) + 1}:00`
+const createGroup = (payments: Payment[], startTime: Date): OperationGroup => {
+  const endTime = new Date(startTime.getTime() + 120000)
+
+  return {
+    timeRange: `${formatTime(startTime)} - ${formatTime(endTime)}`,
+    total: payments.reduce((sum, p) => sum + p.quantity, 0),
+    payments,
+  }
 }
 
-// Simulamos la carga de datos (reemplaza con tu fetch real)
+const formatTime = (date: Date) => {
+  return date
+    .toLocaleTimeString('es-MX', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true,
+    })
+    .replace(/AM|PM/, '')
+}
+
 const loadData = async () => {
   try {
-    const mockData = await fetchAllTips()
-    groupByHour(mockData)
+    const data = await fetchAllTips()
+    groupedOperations.value = groupByTimeWindow(data)
   } catch (error) {
     console.error('Error loading data:', error)
   }

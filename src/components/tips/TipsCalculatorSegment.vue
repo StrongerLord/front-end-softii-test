@@ -228,7 +228,6 @@ const handleInputNumberOfEmployees = (oldValue: number, addValue: number | strin
 }
 
 const handleIndividualTip = (oldValue: number, addValue: number | string) => {
-  console.log(oldValue, addValue)
   let newQuantity: number
 
   if (addValue === '-1') {

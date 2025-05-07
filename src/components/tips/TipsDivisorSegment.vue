@@ -18,7 +18,6 @@ const {
 } = useTipsCalculator()
 
 const handlePayMethod = (order: Order, isCalculatorActive: boolean, stage: number) => {
-  console.log(order, isCalculatorActive, stage)
   nextStage()
   setTempOrder({
     id: Date.now().toString(),
