@@ -3,6 +3,21 @@ import IconPencil from '@/components/icons/IconPencil.vue'
 import IconWallet from '@/components/icons/IconWallet.vue'
 import IconCash from '@/components/icons/IconCash.vue'
 import IconCard from '@/components/icons/IconCard.vue'
+import { formatCurrency } from '@/helpers/currency'
+defineProps({
+  totalTips: {
+    type: Number,
+    required: true,
+  },
+  numberOfEmployees: {
+    type: Number,
+    required: true,
+  },
+  totalTipsPerEmployee: {
+    type: Number,
+    required: true,
+  },
+})
 </script>
 
 <template class="flex-col justify-between">
@@ -13,7 +28,7 @@ import IconCard from '@/components/icons/IconCard.vue'
         <p
           class="text-primary bg-secondary w-fit rounded-md pt-[2%] pr-[4%] pb-[5%] pl-[6%] text-4xl"
         >
-          $1,500.00
+          {{ formatCurrency(totalTips) }}
         </p>
         <button class="w-[11%]">
           <IconPencil />
@@ -29,7 +44,7 @@ import IconCard from '@/components/icons/IconCard.vue'
         disabled
       />
       <p class="text-primary mt-[2%] w-[70%] items-end px-[5%] text-right text-xl">
-        $0.00 x Persona
+        {{ formatCurrency(totalTipsPerEmployee) }} x Persona
       </p>
     </div>
     <div class="mt-[15%] space-y-[3%]">
